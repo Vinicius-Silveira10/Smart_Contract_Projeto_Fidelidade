@@ -1,0 +1,19 @@
+# Repositórios e dependências Node
+node_modules/
+backend/node_modules/
+
+# Variáveis Virtuais / Segredos
+.env
+backend/.env
+
+# Artifacts do Hardhat / Compilações
+artifacts/
+backend/artifacts/
+cache/
+backend/cache/
+coverage/
+coverage.json
+
+# Outros
+.DS_Store
+*.log

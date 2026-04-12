@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenMarket Web3 Loyalty</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.6.2/ethers.umd.min.js"></script>
+</head>
+<body>
+    <header class="glass-header">
+        <div class="logo">GreenMarket Web3 Loyalty</div>
+        <button id="connectWalletBtn" class="primary-btn">Conectar Carteira</button>
+    </header>
+
+    <main>
+        <section class="dashboard card">
+            <h2>Seu Painel</h2>
+            <p>Status: <span id="walletStatus" class="status-disconnected">Desconectado</span></p>
+            <p>Carteira: <span id="walletAddress">Não Conectada</span></p>
+        </section>
+
+        <div class="grid">
+            <section class="card module">
+                <h3>NFT de Acesso VIP</h3>
+                <p>Gere e garanta o seu cartão VIP único registrado na rede blockchain.</p>
+                <div class="nft-visual">
+                    <img src="vip_card.png" alt="Cartão VIP GreenMarket" class="vip-card-img" />
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin: 15px 0; font-size: 0.9em; text-align: left;">
+                    <strong>Vantagens Exclusivas:</strong> Ter este NFT na sua carteira elimina taxas de entrega nas lojas parceiras, dá acesso antecipado a super promoções do GreenMarket e turbina seus ganhos em 1.5x ao fazer Staking.
+                </div>
+                <input type="text" id="customerName" placeholder="Seu Nome Completo" class="text-input" disabled>
+                <button id="mintVipBtn" class="action-btn" disabled>Mintar Cartão VIP</button>
+                <div id="nftMintStatus" class="tx-status"></div>
+            </section>
+
+            <section class="card module">
+                <h3>Aplicar Staking de Pontos</h3>
+                <p>Deposite seus tokens SLP para ganhar bonificações multiplicadoras via oráculo Chainlink.</p>
+                <input type="number" id="stakeAmount" placeholder="Quantidade de SLP" disabled>
+                <button id="stakeBtn" class="action-btn" disabled>Fazer Stake</button>
+                <div id="stakingStatus" class="tx-status"></div>
+            </section>
+
+            <section class="card module">
+                <h3>Governança da Comunidade</h3>
+                <p>Vote ativamente sobre os rumos e novas regras do protocolo GreenMarket.</p>
+                <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin: 15px 0; font-size: 0.9em; text-align: left;">
+                    <strong>Proposta Atual (#0):</strong> Permitir que detentores do "VIP Card NFT" ganhem um multiplicador de 1.5x nas recompensas padrão de Staking de Tokens SLP. Você aprova esta mudança no protocolo?
+                </div>
+                <div class="vote-actions">
+                    <button id="voteYesBtn" class="vote-btn yes" disabled>Votar SIM</button>
+                    <button id="voteNoBtn" class="vote-btn no" disabled>Votar NÃO</button>
+                </div>
+                <div id="voteStatus" class="tx-status"></div>
+            </section>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
