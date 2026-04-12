@@ -28,7 +28,8 @@ const nftABI = [
 ];
 const tokenABI = [
     "function approve(address spender, uint256 value) public returns (bool)",
-    "function balanceOf(address account) public view returns (uint256)"
+    "function balanceOf(address account) public view returns (uint256)",
+    "function transfer(address to, uint256 value) public returns (bool)"
 ];
 const stakingABI = [
     "function stake(uint256 amount) external"
@@ -83,6 +84,9 @@ function initApp(account) {
     walletAddressSpan.textContent = userAddress.substring(0, 6) + "..." + userAddress.substring(38);
     connectWalletBtn.textContent = "Conectado";
     
+    // Buscar Saldo de GLP
+    atualizarSaldo();
+
     // Enable Buttons
     mintVipBtn.disabled = false;
     document.getElementById('customerName').disabled = false;
@@ -90,12 +94,30 @@ function initApp(account) {
     stakeAmount.disabled = false;
     voteYesBtn.disabled = false;
     voteNoBtn.disabled = false;
+    const buyBtns = document.querySelectorAll('.buy-btn');
+    buyBtns.forEach(btn => btn.disabled = false);
 
     setupInteractions();
 }
 
+async function atualizarSaldo() {
+    try {
+        const tokenContract = new ethers.Contract(CONTRACT_ADDRESSES.loyaltyToken, tokenABI, provider);
+        const balance = await tokenContract.balanceOf(userAddress);
+        document.getElementById('tokenBalanceAmount').innerText = parseFloat(ethers.formatUnits(balance, 18)).toFixed(2) + " GLP";
+    } catch(e) {
+        console.error("Erro ao buscar saldo", e);
+    }
+}
+
 async function setupInteractions() {
     signer = await provider.getSigner();
+
+    // Atualiza overlay visual do cartao
+    const nameInput = document.getElementById('customerName');
+    nameInput.addEventListener('input', (e) => {
+        document.getElementById('cardOverlayName').innerText = e.target.value.toUpperCase() || "SEU NOME AQUI";
+    });
 
     // 1. Mint VIP NFT
     mintVipBtn.onclick = async () => {
@@ -138,14 +160,44 @@ async function setupInteractions() {
             const stakeTx = await stakeContract.stake(amountWei);
             await stakeTx.wait();
 
-            stakingStatus.innerText = "Sucesso! Você depositou " + amountStr + " SLP.";
+            stakingStatus.innerText = "Sucesso! Você depositou " + amountStr + " GLP.";
+            atualizarSaldo();
         } catch (e) {
             console.error(e);
             stakingStatus.innerText = "Erro: " + (e.reason || "Transação Falhou");
         }
     };
 
-    // 3. DAO Vote Handler
+    // 3. Resgatar Produtos Diversos (Exchange)
+    const exchangeStatus = document.getElementById('exchangeStatus');
+    const buyBtns = document.querySelectorAll('.buy-btn');
+    
+    buyBtns.forEach(btn => {
+        btn.onclick = async () => {
+            const costStr = btn.getAttribute('data-cost');
+            const itemName = btn.getAttribute('data-name');
+            try {
+                exchangeStatus.innerText = `Aprovando resgate de ${itemName}...`;
+                const amountWei = ethers.parseUnits(costStr, 18);
+                
+                // Simula o resgate transferindo para o endereço morto
+                const tokenContract = new ethers.Contract(CONTRACT_ADDRESSES.loyaltyToken, tokenABI, signer);
+                const burnAddress = "0x000000000000000000000000000000000000dEaD";
+                const tx = await tokenContract.transfer(burnAddress, amountWei);
+                
+                exchangeStatus.innerText = "Processando pagamento...";
+                await tx.wait();
+
+                exchangeStatus.innerText = `🎉 Sucesso! Você resgatou: ${itemName} por ${costStr} GLP.`;
+                atualizarSaldo();
+            } catch (e) {
+                console.error(e);
+                exchangeStatus.innerText = "Erro: saldo insuficiente ou falha na rede.";
+            }
+        };
+    });
+
+    // 4. DAO Vote Handler
     const handleVote = async (support) => {
         if(!CONTRACT_ADDRESSES.governance) {
             voteStatus.innerText = "Deploy pendente. Adicione o endereço do contrato.";

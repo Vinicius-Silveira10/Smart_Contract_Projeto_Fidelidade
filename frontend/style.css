@@ -156,6 +156,20 @@ input[type="number"]:focus, .text-input:focus {
     transform: scale(1.05) rotateY(-5deg) rotateX(5deg);
 }
 
+.card-text-overlay {
+    position: absolute;
+    bottom: 25px;
+    left: 20px;
+    font-family: monospace;
+    font-size: 1.1rem;
+    color: #e2e8f0;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    pointer-events: none;
+    opacity: 0.8;
+}
+
 .vote-actions {
     display: flex;
     gap: 1rem;
@@ -177,4 +191,33 @@ input[type="number"]:focus, .text-input:focus {
     font-size: 0.85rem;
     color: var(--primary);
     word-break: break-all;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.product-card {
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--primary);
+    transform: translateY(-5px);
+}
+
+.product-card .action-btn {
+    margin-top: 15px;
 }

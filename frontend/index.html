@@ -18,14 +18,16 @@
             <h2>Seu Painel</h2>
             <p>Status: <span id="walletStatus" class="status-disconnected">Desconectado</span></p>
             <p>Carteira: <span id="walletAddress">Não Conectada</span></p>
+            <p style="margin-top: 10px; font-size: 1.1em;">Saldo de Pontos: <strong style="color: var(--primary);"><span id="tokenBalanceAmount">0.00 GLP</span></strong></p>
         </section>
 
         <div class="grid">
             <section class="card module">
                 <h3>NFT de Acesso VIP</h3>
                 <p>Gere e garanta o seu cartão VIP único registrado na rede blockchain.</p>
-                <div class="nft-visual">
+                <div class="nft-visual" style="position: relative; display: inline-block;">
                     <img src="vip_card.png" alt="Cartão VIP GreenMarket" class="vip-card-img" />
+                    <div class="card-text-overlay" id="cardOverlayName">SEU NOME AQUI</div>
                 </div>
                 <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin: 15px 0; font-size: 0.9em; text-align: left;">
                     <strong>Vantagens Exclusivas:</strong> Ter este NFT na sua carteira elimina taxas de entrega nas lojas parceiras, dá acesso antecipado a super promoções do GreenMarket e turbina seus ganhos em 1.5x ao fazer Staking.
@@ -37,8 +39,8 @@
 
             <section class="card module">
                 <h3>Aplicar Staking de Pontos</h3>
-                <p>Deposite seus tokens SLP para ganhar bonificações multiplicadoras via oráculo Chainlink.</p>
-                <input type="number" id="stakeAmount" placeholder="Quantidade de SLP" disabled>
+                <p>Deposite seus tokens GLP para ganhar bonificações multiplicadoras via oráculo Chainlink.</p>
+                <input type="number" id="stakeAmount" placeholder="Quantidade de GLP" disabled>
                 <button id="stakeBtn" class="action-btn" disabled>Fazer Stake</button>
                 <div id="stakingStatus" class="tx-status"></div>
             </section>
@@ -54,6 +56,32 @@
                     <button id="voteNoBtn" class="vote-btn no" disabled>Votar NÃO</button>
                 </div>
                 <div id="voteStatus" class="tx-status"></div>
+            </section>
+
+            <section class="card module" style="grid-column: 1 / -1;">
+                <h3>Loja de Resgates Fictícios</h3>
+                <p>Utilize seus GLP acumulados para simular o resgate de produtos e benefícios reais no GreenMarket do seu bairro.</p>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <strong style="font-size:1.1em;">☕ Café Artesanal</strong><br>
+                        <span style="color:var(--text-muted); font-size: 0.9em;">Custo: 150 GLP</span>
+                        <button class="action-btn buy-btn" data-cost="150" data-name="Café Artesanal" disabled>Resgatar</button>
+                    </div>
+                    <div class="product-card">
+                        <strong style="font-size:1.1em;">🍷 Vinho Premium</strong><br>
+                        <span style="color:var(--text-muted); font-size: 0.9em;">Custo: 300 GLP</span>
+                        <button class="action-btn buy-btn" data-cost="300" data-name="Vinho Premium" disabled>Resgatar</button>
+                    </div>
+                    <div class="product-card" style="border-color: var(--primary);">
+                        <strong style="font-size:1.1em;">🎟️ Vale-Compras R$ 50</strong><br>
+                        <span style="color:var(--text-muted); font-size: 0.9em;">Custo: 500 GLP</span>
+                        <div style="font-size: 0.8em; margin-top: 10px; color: #cbd5e1; text-align: left; padding: 5px; background: rgba(0,0,0,0.2); border-radius: 6px;">
+                            <strong>Diferencial Web3:</strong> Converta os GLPs ganhos passivamente em compras anteriores (loyalty) diretamente em poder aquisitivo no mundo real (Fiat), sem gastar um centavo adicional do seu bolso!
+                        </div>
+                        <button class="action-btn buy-btn" data-cost="500" data-name="Vale-Compras R$ 50" disabled>Resgatar</button>
+                    </div>
+                </div>
+                <div id="exchangeStatus" class="tx-status" style="text-align: center; font-size: 1.1em; margin-top: 15px;"></div>
             </section>
         </div>
     </main>
