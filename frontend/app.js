@@ -15,6 +15,17 @@ const voteYesBtn = document.getElementById('voteYesBtn');
 const voteNoBtn = document.getElementById('voteNoBtn');
 const voteStatus = document.getElementById('voteStatus');
 
+// Tradutor de erros comum
+function translateError(e, defaultMsg) {
+    const errorStr = (e.reason || e.message || "").toLowerCase();
+    if (errorStr.includes("already voted")) return "Você já votou nesta proposta.";
+    if (errorStr.includes("insufficient balance") || errorStr.includes("exceeds balance")) return "Saldo insuficiente.";
+    if (errorStr.includes("transfer failed")) return "Falha na transferência. Verifique a permissão.";
+    if (errorStr.includes("user rejected") || errorStr.includes("denied")) return "Transação rejeitada pelo usuário.";
+    if (errorStr.includes("amount must be greater than 0")) return "A quantidade deve ser maior que zero.";
+    return defaultMsg || "Transação rejeitada ou falhou na rede.";
+}
+
 const CONTRACT_ADDRESSES = {
     loyaltyToken: "0x9b8693E6584494D9f71aF5b66823E0Be8f00Fad3",
     vipCardNft: "0xE87a4F945d06D69eb1a22589cFAccDb141eA1fCD",
@@ -32,7 +43,8 @@ const tokenABI = [
     "function transfer(address to, uint256 value) public returns (bool)"
 ];
 const stakingABI = [
-    "function stake(uint256 amount) external"
+    "function stake(uint256 amount) external",
+    "function stakingBalance(address user) public view returns (uint256)"
 ];
 const daoABI = [
     "function vote(uint256 proposalId, bool support) public"
@@ -104,7 +116,19 @@ async function atualizarSaldo() {
     try {
         const tokenContract = new ethers.Contract(CONTRACT_ADDRESSES.loyaltyToken, tokenABI, provider);
         const balance = await tokenContract.balanceOf(userAddress);
-        document.getElementById('tokenBalanceAmount').innerText = parseFloat(ethers.formatUnits(balance, 18)).toFixed(2) + " GLP";
+        const balanceStr = parseFloat(ethers.formatUnits(balance, 18)).toFixed(2) + " GLP";
+        document.getElementById('tokenBalanceAmount').innerText = balanceStr;
+        if (document.getElementById('availableStakingAmount')) {
+            document.getElementById('availableStakingAmount').innerText = balanceStr;
+        }
+
+        // Tambem puxe o saldo do Staking
+        if (CONTRACT_ADDRESSES.staking) {
+            const stakContract = new ethers.Contract(CONTRACT_ADDRESSES.staking, stakingABI, provider);
+            const stBalance = await stakContract.stakingBalance(userAddress);
+            const stakedEl = document.getElementById('stakedBalanceAmount');
+            if(stakedEl) stakedEl.innerText = parseFloat(ethers.formatUnits(stBalance, 18)).toFixed(2) + " GLP";
+        }
     } catch(e) {
         console.error("Erro ao buscar saldo", e);
     }
@@ -134,7 +158,7 @@ async function setupInteractions() {
             nftMintStatus.innerText = "Sucesso! Hash: " + tx.hash.substring(0, 15) + "...";
         } catch (e) {
             console.error(e);
-            nftMintStatus.innerText = "Erro: " + (e.reason || "Transação Falhou");
+            nftMintStatus.innerText = "Erro: " + translateError(e, "Falha na geração do NFT");
         }
     };
 
@@ -164,7 +188,7 @@ async function setupInteractions() {
             atualizarSaldo();
         } catch (e) {
             console.error(e);
-            stakingStatus.innerText = "Erro: " + (e.reason || "Transação Falhou");
+            stakingStatus.innerText = "Erro: " + translateError(e, "Falha ao depositar");
         }
     };
 
@@ -192,7 +216,7 @@ async function setupInteractions() {
                 atualizarSaldo();
             } catch (e) {
                 console.error(e);
-                exchangeStatus.innerText = "Erro: saldo insuficiente ou falha na rede.";
+                exchangeStatus.innerText = "Erro: " + translateError(e, "Falha no resgate");
             }
         };
     });
@@ -212,7 +236,7 @@ async function setupInteractions() {
             voteStatus.innerText = `Voto ${support?"SIM":"NÃO"} registrado com sucesso!`;
         } catch (e) {
             console.error(e);
-            voteStatus.innerText = "Erro: " + (e.reason || "Transação Falhou");
+            voteStatus.innerText = "Erro: " + translateError(e, "Falha ao registrar voto");
         }
     };
 

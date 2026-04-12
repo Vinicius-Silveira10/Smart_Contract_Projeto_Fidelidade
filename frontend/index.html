@@ -40,6 +40,13 @@
             <section class="card module">
                 <h3>Aplicar Staking de Pontos</h3>
                 <p>Deposite seus tokens GLP para ganhar bonificações multiplicadoras via oráculo Chainlink.</p>
+                <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin: 15px 0; font-size: 0.85em; text-align: left;">
+                    <strong>Como Funciona o Depósito:</strong> Seus pontos GLP são alocados com segurança na "Piscina de Liquidez" do Contrato Inteligente. Enquanto estiverem lá, eles geram juros diários automaticamente com base nas cotações mundiais. Você continua dono das suas moedas e pode acompanhar o rendimento em tempo real!
+                </div>
+                <p style="font-size: 1em; margin-bottom: 15px;">
+                    Depositado na Pool: <strong style="color: var(--primary);"><span id="stakedBalanceAmount">-- GLP</span></strong><br>
+                    <span style="font-size: 0.85em; color: var(--text-muted);">Disponível para depósito: <span id="availableStakingAmount">-- GLP</span></span>
+                </p>
                 <input type="number" id="stakeAmount" placeholder="Quantidade de GLP" disabled>
                 <button id="stakeBtn" class="action-btn" disabled>Fazer Stake</button>
                 <div id="stakingStatus" class="tx-status"></div>
