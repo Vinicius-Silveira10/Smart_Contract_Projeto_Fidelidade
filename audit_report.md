@@ -23,12 +23,12 @@ Este documento apresenta uma análise de segurança estática para os contratos 
 ### 2. Visibilidade e Controle de Acesso
 - **LoyaltyToken / VipCardNFT / Governance**: Podem estar sujeitos ao mint/criação infinita.
 - **Risco Potencial**: Médio (Severity: Medium).
-- **Status/Correção**: **RESOLVIDO**. O uso do modificador `onlyOwner` limita a cunhagem de novos pontos de lealdade e NFTs VIP Card ou propostas ao proprietário administrador do contrato. Controle efetivo está mantido.
+- **Status/Correção**: **RESOLVIDO**. O uso do modificador `onlyOwner` limita a cunhagem de novos pontos de lealdade e NFTs VIP Card ou propostas ao proprietário administrador do contrato, garantindo a manutenção de um controle efetivo.
 
 ### 3. Timestamp Dependence
 - **Staking.sol**: Função de cálculo de recompensa utiliza `block.timestamp`.
 - **Risco Potencial**: Baixo (Severity: Low).
-- **Status/Correção**: **RECONHECIDO (Aceitável)**. O uso do timestamp é tolerável não sendo utilizado estritamente para quebrar garantias de lógica de fundos exatos em segundos, mas sim durações longas de staking.
+- **Status/Correção**: **RECONHECIDO (Aceitável)**. O uso do timestamp é tolerável, visto que não é utilizado estritamente para quebrar garantias de lógica de fundos exatos em segundos, mas sim em durações longas de staking.
 
 ### 4. Overflow e Underflow Inteiros
 - **Geral**: Transações matemáticas no Staking/Token.

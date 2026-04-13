@@ -1,10 +1,10 @@
 # ⚙️ Backend Hardhat - Infraestrutura Web3
 
-Bem-vindo ao coração do ambiente de implantação da infraestrutura Web3. A pasta **backend** abriga todo o projeto Hardhat configurado para compilar, testar e jogar os seus contratos na rede mundial.
+Bem-vindo ao coração do ambiente de implantação da infraestrutura Web3. A pasta **backend** abriga todo o projeto Hardhat configurado para compilar, testar e implantar os seus contratos na rede pública.
 
 ## 🛠 Bibliotecas e Ferramentas
 - \`hardhat\`: O framework base do desenvolvimento.
-- \`@openzeppelin/contracts\`: A base imutável e à prova de balas de tokens.
+- \`@openzeppelin/contracts\`: A base imutável e segura para contratos de tokens.
 - \`@chainlink/contracts\`: Comunicação validada entre dados externos e os oráculos na blockchain.
 - \`dotEnv\`: Gestão responsável de segredos (Chaves Privadas PK e RPC).
 

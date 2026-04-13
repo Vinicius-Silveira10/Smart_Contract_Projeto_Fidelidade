@@ -122,12 +122,12 @@ async function atualizarSaldo() {
             document.getElementById('availableStakingAmount').innerText = balanceStr;
         }
 
-        // Tambem puxe o saldo do Staking
+        // Também puxe o saldo do Staking
         if (CONTRACT_ADDRESSES.staking) {
-            const stakContract = new ethers.Contract(CONTRACT_ADDRESSES.staking, stakingABI, provider);
-            const stBalance = await stakContract.stakingBalance(userAddress);
+            const stakingContract = new ethers.Contract(CONTRACT_ADDRESSES.staking, stakingABI, provider);
+            const stakeBalance = await stakingContract.stakingBalance(userAddress);
             const stakedEl = document.getElementById('stakedBalanceAmount');
-            if(stakedEl) stakedEl.innerText = parseFloat(ethers.formatUnits(stBalance, 18)).toFixed(2) + " GLP";
+            if(stakedEl) stakedEl.innerText = parseFloat(ethers.formatUnits(stakeBalance, 18)).toFixed(2) + " GLP";
         }
     } catch(e) {
         console.error("Erro ao buscar saldo", e);

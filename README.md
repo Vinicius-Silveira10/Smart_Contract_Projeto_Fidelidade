@@ -6,7 +6,7 @@ Um MVP de um Protocolo Descentralizado WEB3 construído para a rede de supermerc
 
 - **O Problema**: Redes de supermercado não conseguem engajar de forma profunda o consumidor com sistemas de pontos convencionais.
 - **A Solução (GreenMarket Protocol)**: 
-  - Compras geram **Loyalty Tokens (SLP/GLP)** (ERC-20). 
+  - Compras geram **Loyalty Tokens (GLP)** (ERC-20). 
   - Clientes regulares podem Mintar um **VIP Pass NFT** (ERC-721).
   - Pode-se colocar os Tokens em **Staking** com multiplicador de rendimentos se o preço do ETH estiver acima de 3000 USD (utilizando o Oráculo ETH/USD da **Chainlink**).
   - Os usuários também podem submeter **Propostas de Governança**, formando a DAO para votar em mudanças no protocolo.
